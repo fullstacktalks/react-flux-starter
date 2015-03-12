@@ -2,7 +2,8 @@
 
 Full Stack, March 12, 2015
 
-You can see the final product on [the `finished` branch](https://github.com/fullstacktalks/react-flux-starter/compare/finished) or live on [github pages](http://fullstacktalks.github.io/react-flux-starter/).
+You can see the final product on [the `finished` branch](https://github.com/fullstacktalks/react-flux-starter/compare/finished).
+
 ## Getting started
 
 - Clone this repo and go to it:
