@@ -5,27 +5,29 @@ Full Stack, March 12, 2015
 ## Getting started
 
 - Clone this repo and go to it:
+ 
   ```
-  cd ~/code # or wherever you keep it
+  cd ~/code # or wherever you keep code
   git clone git@github.com:fullstacktalks/react-flux-starter.git
   cd react-flux-starter
   ```
+  
 - Start a web server:
+ 
   ```
   python -m SimpleHTTPServer 8000
   ```
-- In another terminal, open the project:
-  ```
-  open http://localhost:8000/lab/
-  ```
-- Open the project in your code editor.
+  
+- Open the project in a browser (`http://localhost:8000/lab/`):
 
+  ![image](https://cloud.githubusercontent.com/assets/2231765/6630596/f9452cb8-c8d7-11e4-9c92-0e9751e2d350.png)
+
+- Open the project in your code editor.
 
 ## Tasks
 
-
 1) __Display the currently selected city.__ You'll need to:
-  - Create a new React component
+  - Create a new React component called `Display`
   - Render that component into `#display`
   - Make the component read its state from `SelectedValueStore`
   - Make the component listen for changes from `SelectedValueStore`
