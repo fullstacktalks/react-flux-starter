@@ -2,6 +2,7 @@
 
 Full Stack, March 12, 2015
 
+You can see the final product on [the `finished` branch](https://github.com/fullstacktalks/react-flux-starter/compare/finished) or live on [github pages](http://fullstacktalks.github.io/react-flux-starter/).
 ## Getting started
 
 - Clone this repo and go to it:
@@ -37,3 +38,4 @@ Full Stack, March 12, 2015
   - Make the store listen for `VALUE_WAS_SELECTED` in the dispatcher
   - Use those events to update the store's value and update subscribers
   - Display that value in your new component
+  
