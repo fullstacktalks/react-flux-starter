@@ -1,0 +1,93 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
+    <script src="/dispatcher.js"></script>
+    <style> div { padding: 20px; } </style>
+    <script type='text/jsx;harmony=true'>
+    /* this is Facebook's dispatcher */
+    var valueDispatcher = new Flux.Dispatcher()
+
+    var ValueSelectionActions = {
+      valueWasSelected: function(value) {
+        valueDispatcher.dispatch({
+          actionType: "VALUE_WAS_SELECTED",
+          value: value,
+        })
+      }
+    }
+
+    var SelectedValueStore = {
+      /* event emitter */
+      _handlers: [],
+      addChangeHandler: function(func) {
+        this._handlers.push(func)
+      },
+      removeChangeHandler: function(func) {
+        var idx = this._handlers.indexOf(func)
+        this._handlers.splice(idx, 1)
+      },
+      emitChange: function() {
+        this._handlers.forEach(function(func){ func() })
+      },
+      /* storage */
+      _value: 3,
+      getValue: function() {
+        return this._value
+      },
+      /* action handler */
+      _handleAction: function(payload) {
+        if (payload.actionType == "VALUE_WAS_SELECTED") {
+          SelectedValueStore._value = payload.value
+          SelectedValueStore.emitChange()
+        }
+      }.bind(SelectedValueStore),
+    }
+
+    /* hook up the store */
+    valueDispatcher.register(SelectedValueStore._handleAction)
+
+    var NumberSelector = React.createClass({
+      getInitialState: function() {
+        return {
+          selectedValue: SelectedValueStore.getValue()
+        }
+      },
+      componentWillMount: function() {
+        SelectedValueStore.addChangeHandler(this._handleValueChanged)
+      },
+      componentWillUnmount: function() {
+        SelectedValueStore.removeChangeHandler(this._handleValueChanged)
+      },
+      render: function() {
+        return (
+          <div>
+            <p>You selected: {this.state.selectedValue}</p>
+            <select
+              onChange={this.handleChange}
+              value={this.state.selectedValue}
+            >
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+            </select>
+          </div>
+        )
+      },
+      handleChange: function(ev) {
+        ValueSelectionActions.valueWasSelected(ev.target.value)
+      },
+      _handleValueChanged: function() {
+        this.setState({
+          selectedValue: SelectedValueStore.getValue()
+        })
+      },
+    })
+
+    React.render(<NumberSelector />, document.getElementById('number-selector'))
+    </script>
+  </head>
+  <body>
+    <div id='number-selector'></div>
+  </body>
+</html>

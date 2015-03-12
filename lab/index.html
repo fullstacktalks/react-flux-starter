@@ -1,0 +1,120 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
+    <script src="/dispatcher.js"></script>
+    <link rel='stylesheet' href='/lab/styles.css'></link>
+    <script type='text/jsx;harmony=true'>
+    ///
+    /// DISPATCHER
+    ///
+    var appDispatcher = new Flux.Dispatcher() // This is Facebook's dispatcher.
+
+    ///
+    /// ACTIONS
+    ///
+
+    var ValueSelectionActions = {
+      valueWasSelected: function(value) {
+        appDispatcher.dispatch({
+          actionType: "VALUE_WAS_SELECTED",
+          value: value,
+        })
+      }
+    }
+
+    ///
+    /// STORES
+    ///
+
+    var SelectedValueStore = {
+      /* event emitter */
+      _handlers: [],
+      addChangeHandler: function(func) {
+        this._handlers.push(func)
+      },
+      removeChangeHandler: function(func) {
+        var idx = this._handlers.indexOf(func)
+        this._handlers.splice(idx, 1)
+      },
+      emitChange: function() {
+        this._handlers.forEach(function(func){ func() })
+      },
+      /* storage */
+      _value: "Los Angeles",
+      getValue: function() {
+        return this._value
+      },
+      /* action handler */
+      _handleAction: function(payload) {
+        if (payload.actionType == "VALUE_WAS_SELECTED") {
+          this._value = payload.value
+          this.emitChange()
+        }
+      },
+    }
+
+    /* hook up the store */
+    var boundCallback = SelectedValueStore._handleAction.bind(SelectedValueStore)
+    appDispatcher.register(boundCallback)
+
+    ///
+    /// VIEWS
+    ///
+    var Selector = React.createClass({
+      getInitialState: function() {
+        return {
+          selectedValue: SelectedValueStore.getValue()
+        }
+      },
+      componentWillMount: function() {
+        SelectedValueStore.addChangeHandler(this._handleValueChanged)
+      },
+      componentWillUnmount: function() {
+        SelectedValueStore.removeChangeHandler(this._handleValueChanged)
+      },
+      render: function() {
+        return (
+          <div>
+            <h2>Itinerary</h2>
+            <label>Next Destination: </label>
+            <select onChange={this.handleChange} value={this.state.selectedValue}>
+              <option>Los Angeles</option>
+              <option>New York</option>
+              <option>London</option>
+              <option>Paris</option>
+              <option>Vienna</option>
+              <option>Hong Kong</option>
+              <option>Shanghai</option>
+              <option>Sydney</option>
+            </select>
+          </div>
+        )
+      },
+      handleChange: function(ev) {
+        ValueSelectionActions.valueWasSelected(ev.target.value)
+      },
+      _handleValueChanged: function() {
+        this.setState({
+          selectedValue: SelectedValueStore.getValue()
+        })
+      },
+    })
+
+    ///
+    /// INITIALIZE
+    ///
+    React.render(<Selector />, document.getElementById('selector'))
+
+    </script>
+  </head>
+  <body>
+    <section id='selector'></section>
+    <section id='display'>
+      <div>
+        <h2>Currently: ??</h2>
+        <p>This selection has been made ?? times.</p>
+      </div>
+    </section>
+  </body>
+</html>

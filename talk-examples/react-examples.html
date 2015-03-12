@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
+    <style>
+      div {
+        padding: 20px;
+      }
+    </style>
+    <script type='text/jsx;harmony=true'>
+    var NumberSelector1 = React.createClass({
+      render: function() {
+        return (
+          <div>
+            <p>You selected: Nothing</p>
+            <select>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+            </select>
+          </div>
+        )
+      },
+    })
+
+    var NumberSelector2 = React.createClass({
+      getInitialState: function() {
+        return {
+          selectedValue: 1
+        }
+      },
+      render: function() {
+        return (
+          <div>
+            <p>You selected: {this.state.selectedValue}</p>
+            <select value={this.state.selectedValue}>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+            </select>
+          </div>
+        )
+      },
+    })
+
+    var NumberSelector3 = React.createClass({
+      getInitialState: function() {
+        return {
+          selectedValue: 1
+        }
+      },
+      render: function() {
+        return (
+          <div>
+            <p>You selected: {this.state.selectedValue}</p>
+            <select
+              value={this.state.selectedValue}
+              onChange={this.handleChange}
+            >
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+            </select>
+          </div>
+        )
+      },
+      handleChange: function(ev) {
+        this.setState({
+          selectedValue: ev.target.value
+        })
+      }
+    })
+
+    React.render(<NumberSelector1 />, document.getElementById('number-selector-1'))
+    React.render(<NumberSelector2 />, document.getElementById('number-selector-2'))
+    React.render(<NumberSelector3 />, document.getElementById('number-selector-3'))
+    </script>
+  </head>
+  <body>
+    <div id='number-selector-1'></div>
+    <div id='number-selector-2'></div>
+    <div id='number-selector-3'></div>
+  </body>
+</html>
